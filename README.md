@@ -1,6 +1,7 @@
 # Telegram bot template
 
 aiogram 3.3.0
+
 aiogram-dialog 2.1.0
 
 MongoDB
