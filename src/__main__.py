@@ -8,6 +8,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from src.handlers import register_routers
 
+from src.commands import set_bot_commands
 from src.db import User
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -22,6 +23,8 @@ async def main():
 
     bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
     dp = Dispatcher()
+
+    await set_bot_commands(bot)
 
     router = register_routers()
     dp.include_router(router)
