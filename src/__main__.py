@@ -7,6 +7,7 @@ from loguru import logger
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from src.handlers import register_routers
+from src.middlewares import UserMiddleware, ThrottlingMiddleware
 
 from src.commands import set_bot_commands
 from src.db import User
@@ -23,6 +24,12 @@ async def main():
 
     bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
     dp = Dispatcher()
+
+    dp.message(ThrottlingMiddleware())
+    dp.callback_query(ThrottlingMiddleware())
+
+    dp.message(UserMiddleware())
+    dp.callback_query(UserMiddleware())
 
     await set_bot_commands(bot)
 
