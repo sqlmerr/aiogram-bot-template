@@ -25,11 +25,11 @@ async def main():
     bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
     dp = Dispatcher()
 
-    dp.message(ThrottlingMiddleware())
-    dp.callback_query(ThrottlingMiddleware())
+    dp.message.middleware(ThrottlingMiddleware())
+    dp.callback_query.middleware(ThrottlingMiddleware())
 
-    dp.message(UserMiddleware())
-    dp.callback_query(UserMiddleware())
+    dp.message.middleware(UserMiddleware())
+    dp.callback_query.middleware(UserMiddleware())
 
     await set_bot_commands(bot)
 
