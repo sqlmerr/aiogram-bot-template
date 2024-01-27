@@ -7,7 +7,11 @@ from loguru import logger
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from src.handlers import register_routers
-from src.middlewares import UserMiddleware, ThrottlingMiddleware
+from src.middlewares import (
+    UserMiddleware,
+    ThrottlingMiddleware,
+    LocalizationMiddleware
+)
 
 from src.commands import set_bot_commands
 from src.db import User
@@ -19,7 +23,7 @@ dotenv.load_dotenv()
 
 async def main():
     logger.info("Initializing MongoDB")
-    mongo = AsyncIOMotorClient(os.getenv("MONGO_URL"))
+    mongo = AsyncIOMotorClient(str(os.getenv("MONGO_URL")))
     await init_beanie(database=mongo.your_db_name, document_models=[User])
 
     bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
@@ -30,6 +34,10 @@ async def main():
 
     dp.message.middleware(UserMiddleware())
     dp.callback_query.middleware(UserMiddleware())
+
+    dp.message.middleware(LocalizationMiddleware())
+    dp.callback_query.middleware(LocalizationMiddleware())
+    # dp.update.middleware(LocalizationMiddleware())
 
     await set_bot_commands(bot)
 

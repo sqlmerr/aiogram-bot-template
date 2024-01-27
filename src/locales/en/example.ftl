@@ -1,0 +1,2 @@
+example =
+    some text, { $some }
