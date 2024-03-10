@@ -1,6 +1,6 @@
 # Telegram bot template
 
-aiogram 3.3.0
+aiogram 3.4.1
 
 aiogram-dialog 2.1.0
 
