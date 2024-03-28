@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     use_webhooks: bool = True
     WEB_SERVER_HOST: str = "127.0.0.1"
     WEB_SERVER_PORT: int = 8080
-    BASE_WEBHOOK_URL: str = "https://9dcc554a0ea38a.lhr.life" #  = "https://example.com"
+    BASE_WEBHOOK_URL: str = "https://example.com"
     WEBHOOK_SECRET: str = "my-secret"
     WEBHOOK_PATH: str = "/webhook"
 
