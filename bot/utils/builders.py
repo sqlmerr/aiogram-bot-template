@@ -3,7 +3,9 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardMarkup
 
 
-def url_builder(*buttons: List[str], per_row: Union[List[int], int] = 1) -> InlineKeyboardMarkup:
+def url_builder(
+    *buttons: List[str], per_row: Union[List[int], int] = 1
+) -> InlineKeyboardMarkup:
     """easy generation of inline buttons with url
 
     :argument:
@@ -31,7 +33,9 @@ def url_builder(*buttons: List[str], per_row: Union[List[int], int] = 1) -> Inli
     return b.as_markup()
 
 
-def inline_builder(*buttons: List[str], per_row: Union[List[int], int] = 1) -> InlineKeyboardMarkup:
+def inline_builder(
+    *buttons: List[str], per_row: Union[List[int], int] = 1
+) -> InlineKeyboardMarkup:
     """easy generation of inline buttons with callback data
 
     :argument:

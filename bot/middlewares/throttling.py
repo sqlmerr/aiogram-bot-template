@@ -1,4 +1,4 @@
-from typing import Any, Awaitable, Callable, Dict, Union
+from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject, CallbackQuery
@@ -10,10 +10,10 @@ class ThrottlingMiddleware(BaseMiddleware):
         self.cache = TTLCache(maxsize=10_000, ttl=throttle_time)
 
     async def __call__(
-            self,
-            handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
-            event: TelegramObject,
-            data: Dict[str, Any],
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
     ) -> Any:
         if event.from_user.id in self.cache:
             if isinstance(event, CallbackQuery):

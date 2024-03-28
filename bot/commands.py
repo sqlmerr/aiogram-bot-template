@@ -9,5 +9,5 @@ async def set_bot_commands(bot: Bot):
 
     return await bot.set_my_commands(
         commands,
-        BotCommandScopeDefault()  # or another scope https://core.telegram.org/type/BotCommandScope
+        BotCommandScopeDefault(),  # or another scope https://core.telegram.org/type/BotCommandScope
     )
