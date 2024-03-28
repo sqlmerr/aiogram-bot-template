@@ -3,7 +3,7 @@
 ### Features:
  - aiogram 3.4.1
  - aiogram-dialog 2.1.0
- - MongoDB (beanie)
+ - Postgresql (sqlalchemy, alembic)
 
 ### Install
 ```bash
