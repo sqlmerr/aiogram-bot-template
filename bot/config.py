@@ -7,8 +7,15 @@ class Settings(BaseSettings):
     DB_URL: SecretStr
 
     echo: bool = False
+    use_webhooks: bool = True
 
-    model_config = SettingsConfigDict(env_file=".env")
+    WEB_SERVER_HOST: str = "127.0.0.1"
+    WEB_SERVER_PORT: int = 8080
+    BASE_WEBHOOK_URL: str = "https://example.com"
+    WEBHOOK_SECRET: str = "my-secret"
+    WEBHOOK_PATH: str = "/webhook"
+
+    model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
 
 
 settings = Settings()
