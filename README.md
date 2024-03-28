@@ -1,19 +1,19 @@
 # Telegram bot template
 
-aiogram 3.4.1
+### Features:
+ - aiogram 3.4.1
+ - aiogram-dialog 2.1.0
+ - MongoDB (beanie)
 
-aiogram-dialog 2.1.0
-
-MongoDB
-
-## Install
+### Install
 ```bash
 git clone https://github.com/sqlmerr/aiogram-bot-template
 cd aiogram-bot-template
-pip install -r requirements.txt
+pip install poetry
+poetry install
 ```
 
-## Run
+### Run
 ```bash
 python -m bot
 ```

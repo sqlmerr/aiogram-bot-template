@@ -6,11 +6,13 @@ from loguru import logger
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
+from aiogram_i18n import I18nMiddleware
+from aiogram_i18n.cores import FluentCompileCore
+
 from bot.handlers import register_routers
 from bot.middlewares import (
     UserMiddleware,
-    ThrottlingMiddleware,
-    LocalizationMiddleware
+    ThrottlingMiddleware
 )
 from bot.config import settings
 
@@ -27,6 +29,7 @@ async def main():
 
     bot = Bot(token=settings.BOT_TOKEN.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
+    dp.startup.register(lambda: logger.info("Bot successfully started"))  # or create function with your custom logic
 
     dp.message.middleware(ThrottlingMiddleware())
     dp.callback_query.middleware(ThrottlingMiddleware())
@@ -34,14 +37,17 @@ async def main():
     dp.message.middleware(UserMiddleware())
     dp.callback_query.middleware(UserMiddleware())
 
-    dp.message.middleware(LocalizationMiddleware())
-    dp.callback_query.middleware(LocalizationMiddleware())
-    # dp.update.middleware(LocalizationMiddleware())
-
     await set_bot_commands(bot)
 
     router = register_routers()
     dp.include_router(router)
+
+    i18n_middleware = I18nMiddleware(
+        core=FluentCompileCore(
+            path="bot/locales/{locale}/"
+        )
+    )
+    i18n_middleware.setup(dispatcher=dp)
 
     logger.info('Starting Bot')
     await bot.delete_webhook(drop_pending_updates=True)
