@@ -4,7 +4,9 @@ from pydantic import SecretStr
 
 class Settings(BaseSettings):
     BOT_TOKEN: SecretStr
-    MONGO_URL: SecretStr
+    DB_URL: SecretStr
+
+    echo: bool = False
 
     model_config = SettingsConfigDict(env_file=".env")
 

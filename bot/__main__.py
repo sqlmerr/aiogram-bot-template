@@ -13,15 +13,10 @@ from bot.middlewares import UserMiddleware, ThrottlingMiddleware
 from bot.config import settings
 
 from bot.commands import set_bot_commands
-from bot.db import User
-from beanie import init_beanie
-from motor.motor_asyncio import AsyncIOMotorClient
 
 
 async def main():
     logger.info("Initializing MongoDB")
-    mongo = AsyncIOMotorClient(settings.MONGO_URL.get_secret_value())
-    await init_beanie(database=mongo.your_db_name, document_models=[User])
 
     bot = Bot(
         token=settings.BOT_TOKEN.get_secret_value(),

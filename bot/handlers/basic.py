@@ -6,7 +6,7 @@ from aiogram.filters import Command
 
 from aiogram_i18n import I18nContext
 
-from bot.db import User
+from bot.db import create_user, User
 
 router = Router()
 
@@ -14,9 +14,7 @@ router = Router()
 @router.message(Command("start"))
 async def start_cmd(message: Message, user: User, i18n: I18nContext):
     if not user:
-        user = User(user_id=message.from_user.id)
-
-        await user.insert()
+        await create_user(message.from_user.id)
         logger.debug(f"registered new user with id {message.from_user.id}")
 
     await message.reply(f"<b>Hello, {message.from_user.full_name}</b>")
