@@ -6,7 +6,7 @@ from aiogram.filters import Command
 
 from fluent.runtime import FluentLocalization
 
-from src.db import User
+from bot.db import User
 
 router = Router()
 

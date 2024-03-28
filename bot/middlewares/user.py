@@ -2,7 +2,7 @@ from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
-from src.db import get_user
+from bot.db import get_user
 
 
 class UserMiddleware(BaseMiddleware):
