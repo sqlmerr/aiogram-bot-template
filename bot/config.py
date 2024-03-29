@@ -1,10 +1,10 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import SecretStr
+from pydantic import SecretStr, Field
 
 
 class Settings(BaseSettings):
     BOT_TOKEN: SecretStr
-    MONGO_URL: SecretStr
+    MONGO_URL: SecretStr = Field("mongodb://localhost:27017/")
 
 
     use_webhooks: bool = True

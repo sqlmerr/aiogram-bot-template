@@ -1,6 +1,5 @@
 import asyncio
-
-from loguru import logger
+import logging
 
 from aiohttp import web
 from aiogram import Bot, Dispatcher
@@ -19,6 +18,7 @@ from bot.db import User
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
+logger = logging.getLogger()
 
 def create_dispatcher() -> Dispatcher:
     dp = Dispatcher()
@@ -67,6 +67,7 @@ async def on_webhook_startup(bot: Bot) -> None:
     await bot.set_webhook(f"{settings.BASE_WEBHOOK_URL}{settings.WEBHOOK_PATH}", secret_token=settings.WEBHOOK_SECRET)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     if settings.use_webhooks:
         bot = Bot(
             token=settings.BOT_TOKEN.get_secret_value(),
