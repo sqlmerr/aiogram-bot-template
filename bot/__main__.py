@@ -1,6 +1,5 @@
 import asyncio
-
-from loguru import logger
+import logging
 
 from aiohttp import web
 from aiogram import Bot, Dispatcher
@@ -16,6 +15,7 @@ from bot.config import settings
 
 from bot.commands import set_bot_commands
 
+logger = logging.getLogger()
 
 def create_dispatcher() -> Dispatcher:
     dp = Dispatcher()
@@ -63,6 +63,7 @@ async def on_webhook_startup(bot: Bot) -> None:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     if settings.use_webhooks:
         bot = Bot(
             token=settings.BOT_TOKEN.get_secret_value(),

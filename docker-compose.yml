@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16.2-alpine
+    command: -p 5432
+    expose:
+      - 5432
+    volumes:
+      - postgresqls-data:/data/db
+    env_file:
+      - .env
+  bot:
+    build: 
+      context: .
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+volumes:
+  postgresql-data:

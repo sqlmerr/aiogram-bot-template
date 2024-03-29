@@ -1,4 +1,4 @@
-from loguru import logger
+import logging
 
 from aiogram import Router
 from aiogram.types import Message
@@ -8,6 +8,7 @@ from aiogram_i18n import I18nContext
 
 from bot.db import create_user, User
 
+logger = logging.getLogger()
 router = Router()
 
 
