@@ -1,9 +1,14 @@
 FROM python:3.11-slim
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
-
-COPY . /app
 WORKDIR /app
 
-CMD ["python3", "-m", "bot"]
+COPY poetry.lock pyproject.toml ./
+
+RUN python -m pip install --no-cache-dir poetry==1.4.2 \
+    && poetry config virtualenvs.create false \
+    && poetry install --without dev,test --no-interaction --no-ansi \
+    && rm -rf $(poetry config cache-dir)/{cache,artifacts}
+
+RUN poetry install --no-dev
+
+COPY . .
