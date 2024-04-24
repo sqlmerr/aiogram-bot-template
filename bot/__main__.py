@@ -20,6 +20,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger()
 
+
 def create_dispatcher() -> Dispatcher:
     dp = Dispatcher()
     dp.startup.register(
@@ -42,10 +43,15 @@ def create_dispatcher() -> Dispatcher:
 
     return dp
 
-async def main():
-    logger.info("Initializing MongoDB")
+
+async def init_db() -> None:
     mongo = AsyncIOMotorClient(settings.MONGO_URL.get_secret_value())
     await init_beanie(database=mongo.your_db_name, document_models=[User])
+
+
+async def main():
+    logger.info("Initializing MongoDB")
+    await init_db()
 
     bot = Bot(
         token=settings.BOT_TOKEN.get_secret_value(),
@@ -61,10 +67,13 @@ async def main():
 
 
 async def on_webhook_startup(bot: Bot) -> None:
-    mongo = AsyncIOMotorClient(settings.MONGO_URL.get_secret_value())
-    await init_beanie(database=mongo.your_db_name, document_models=[User])
+    await init_db()
 
-    await bot.set_webhook(f"{settings.BASE_WEBHOOK_URL}{settings.WEBHOOK_PATH}", secret_token=settings.WEBHOOK_SECRET)
+    await bot.set_webhook(
+        f"{settings.BASE_WEBHOOK_URL}{settings.WEBHOOK_PATH}",
+        secret_token=settings.WEBHOOK_SECRET,
+    )
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -78,9 +87,7 @@ if __name__ == "__main__":
 
         app = web.Application()
         webhook_requests_hander = SimpleRequestHandler(
-            dispatcher=dp,
-            bot=bot,
-            secret_token=settings.WEBHOOK_SECRET
+            dispatcher=dp, bot=bot, secret_token=settings.WEBHOOK_SECRET
         )
         webhook_requests_hander.register(app, path=settings.WEBHOOK_PATH)
         setup_application(app, dp, bot=bot)
