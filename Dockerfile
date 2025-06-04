@@ -1,14 +1,13 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-COPY poetry.lock pyproject.toml ./
+COPY uv.lock pyproject.toml ./
 
-RUN python -m pip install --no-cache-dir poetry==1.4.2 \
-    && poetry config virtualenvs.create false \
-    && poetry install --without dev,test --no-interaction --no-ansi \
-    && rm -rf $(poetry config cache-dir)/{cache,artifacts}
+RUN apt update && apt install libcairo2 git build-essential gcc -y --no-install-recommends
 
-RUN poetry install --no-dev
+RUN uv lock --frozen
 
 COPY . .

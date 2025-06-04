@@ -18,7 +18,10 @@ from bot.db import User
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
-logger = logging.getLogger()
+from bot.dialogs import example as example_dialog
+from aiogram_dialog import setup_dialogs
+
+logger = logging.getLogger(__name__)
 
 
 def create_dispatcher() -> Dispatcher:
@@ -35,6 +38,8 @@ def create_dispatcher() -> Dispatcher:
 
     router = register_routers()
     dp.include_router(router)
+    dp.include_routers(example_dialog.ui)  # all your dialogs
+    setup_dialogs(dp)
 
     i18n_middleware = I18nMiddleware(
         core=FluentCompileCore(path="bot/locales/{locale}/")
@@ -86,10 +91,10 @@ if __name__ == "__main__":
         dp.startup.register(on_webhook_startup)
 
         app = web.Application()
-        webhook_requests_hander = SimpleRequestHandler(
+        webhook_requests_handler = SimpleRequestHandler(
             dispatcher=dp, bot=bot, secret_token=settings.WEBHOOK_SECRET
         )
-        webhook_requests_hander.register(app, path=settings.WEBHOOK_PATH)
+        webhook_requests_handler.register(app, path=settings.WEBHOOK_PATH)
         setup_application(app, dp, bot=bot)
 
         web.run_app(app, host=settings.WEB_SERVER_HOST, port=settings.WEB_SERVER_PORT)
